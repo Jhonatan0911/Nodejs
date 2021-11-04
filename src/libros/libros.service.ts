@@ -1,34 +1,23 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 import { Libro } from './interfaces/libro';
+import { Model } from 'mongoose';
+import { CreateLibroDto } from './dto/create-libro.dto';
 
 @Injectable()
 export class LibrosService {
-  libros: Libro[] = [
-    {
-      id: 1,
-      name: 'Heist',
-      autor: 'Ariana Godoy',
-      done: true,
-    },
-    {
-      id: 2,
-      name: 'STRANGE',
-      autor: 'Alex Digomas',
-      done: true,
-    },
-    {
-      id: 3,
-      name: 'Culpa mía',
-      autor: 'Mercedes Ronn',
-      done: false,
-    },
-  ];
+  constructor(@InjectModel('Libro') private libroModel: Model<Libro>) {}
 
-  getLibros(): Libro[] {
-    return this.libros;
+  async getLibros() {
+    return await this.libroModel.find();
   }
-  getLibro(id: number): Libro {
-    // eslint-disable-next-line prettier/prettier
-    return this.libros.find(libro => libro.id === id);
+
+  async getLibro(_id: string) {
+    return await this.libroModel.findById(_id);
+  }
+
+  async createLibro(libro: CreateLibroDto) {
+    const newLibro = new this.libroModel(libro);
+    return await newLibro.save();
   }
 }

@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
-export interface Libro {
-  id?: number;
-  name: string;
-  autor: string;
-  done: boolean;
+import { Document } from 'mongoose';
+export interface Libro extends Document {
+  id?: number,
+  name: string,
+  autor: string,
+  done: boolean
 }

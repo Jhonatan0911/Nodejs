@@ -8,19 +8,18 @@ import { Libro } from './interfaces/libro';
 export class LibrosController {
   constructor(private libroService: LibrosService) {}
   @Get()
-  getlibros(): Libro[] {
+  getlibros(): Promise<Libro[]> {
     return this.libroService.getLibros();
   }
 
   @Get(':libroId')
   getlibro(@Param('libroId') libroId: string) {
-    return this.libroService.getLibro(parseInt(libroId));
+    return this.libroService.getLibro(libroId);
   }
 
   @Post()
-  createLibro(@Body() libro: CreateLibroDto): string {
-    console.log(libro);
-    return 'creating a libro';
+  createLibro(@Body() libro: CreateLibroDto): Promise<Libro> {
+    return this.libroService.createLibro(libro);
   }
 
   @Delete(':id')
